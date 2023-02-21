@@ -52,16 +52,16 @@ public class HomePage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//
-//        Maps = findViewById(R.id.Maps);
-//        Maps.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(HomePage.this, MapsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
+
+        Maps = findViewById(R.id.Maps);
+        Maps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, Map.class);
+                startActivity(intent);
+            }
+        });
+
         //button that will sign the user out and redirect them back the main activity.
         Button logout;
         logout = (Button)findViewById(R.id.Logout);
