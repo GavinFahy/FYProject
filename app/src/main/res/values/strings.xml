@@ -2,4 +2,5 @@
     <string name="app_name">FYProject</string>
     <string name="title_activity_map">Map</string>
     <string name="google_map_api_key">AIzaSyDFNOGk6EE0XngdVR08zkar_VeYxWVRe3Q</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
