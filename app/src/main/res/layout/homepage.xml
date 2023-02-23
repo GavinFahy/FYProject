@@ -53,6 +53,30 @@
         app:layout_constraintVertical_bias="0.401" />
 
     <Button
+        android:id="@+id/HP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Health Problems"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+
+    <Button
+        android:id="@+id/MH"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Medical History/Current Illness"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.59" />
+
+    <Button
         android:id="@+id/Logout"
         android:layout_width="411dp"
         android:layout_height="49dp"

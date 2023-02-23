@@ -15,6 +15,8 @@ public class HomePage extends AppCompatActivity {
     private Button VButton;
     private Button IButton;
     private Button Maps;
+    private Button HP;
+    private Button MH;
     FirebaseAuth Authorisation;
 
 
@@ -58,6 +60,24 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomePage.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        HP = findViewById(R.id.HP);
+        HP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, HealthProblems.class);
+                startActivity(intent);
+            }
+        });
+
+        MH = findViewById(R.id.MH);
+        MH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, MedicalHistory.class);
                 startActivity(intent);
             }
         });

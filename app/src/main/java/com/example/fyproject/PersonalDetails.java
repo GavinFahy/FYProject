@@ -43,6 +43,29 @@ public class PersonalDetails extends AppCompatActivity {
         Button Update = findViewById(R.id.update);
 
         Update.setOnClickListener(V -> {
+            String name = EnterName.getText().toString();
+            String age = EnterAge.getText().toString();
+            String gender = EnterGender.getText().toString();
+            String weight = EnterWeight.getText().toString();
+            String phoneNumber = EnterContactNumber.getText().toString();
+            String consultant = EnterConsultant.getText().toString();
+            String nok = EnterNext_of_kin.getText().toString();
+            String number = EnterNextOfKinNumber.getText().toString();
+
+            //making sure none of the fields are empty
+            if (name.isEmpty() || age.isEmpty() || gender.isEmpty() || weight.isEmpty()
+                    || phoneNumber.isEmpty() || consultant.isEmpty() || nok.isEmpty()
+                    || number.isEmpty()) {
+                Toast.makeText(this, "All fields must be filled in", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            //check to see if the phone number is the correct amount of digits in length
+            if (phoneNumber.length() != 10) {
+                Toast.makeText(this, "Phone number must be 10 digits long", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             HashMap<String, Object> data = new HashMap<>();
             data.put("Name", EnterName.getText().toString());
             data.put("Age", EnterAge.getText().toString());
