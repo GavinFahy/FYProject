@@ -679,7 +679,7 @@
         tools:ignore="MissingConstraints" />
 
     <CheckBox
-        android:id="@+id/checkBox21"
+        android:id="@+id/SwineFluBox"
         android:layout_width="27dp"
         android:layout_height="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
