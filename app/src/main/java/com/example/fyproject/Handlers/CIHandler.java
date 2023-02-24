@@ -1,4 +1,4 @@
-package com.example.fyproject;
+package com.example.fyproject.Handlers;
 
 public class CIHandler {
     public String Current, History;

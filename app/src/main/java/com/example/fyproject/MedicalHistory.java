@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.fyproject.DataAccess.CI_DataAccess;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,9 +39,6 @@ public class MedicalHistory extends AppCompatActivity {
 
         //updating current Illness
         UpdateCurrent.setOnClickListener(V -> {
-            String Current = EnterCurrent.getText().toString();
-
-
             HashMap<String, Object> data = new HashMap<>();
             data.put("Current", EnterCurrent.getText().toString());
             CIDataAccess.update(currentUserId, data)
@@ -54,9 +52,6 @@ public class MedicalHistory extends AppCompatActivity {
 
         //updating History
         UpdateHistory.setOnClickListener(V -> {
-            String History = EnterHistory.getText().toString();
-
-
             HashMap<String, Object> data = new HashMap<>();
             data.put("History", EnterHistory.getText().toString());
             CIDataAccess.update(currentUserId, data)

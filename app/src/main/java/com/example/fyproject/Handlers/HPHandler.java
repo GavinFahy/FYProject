@@ -1,4 +1,4 @@
-package com.example.fyproject;
+package com.example.fyproject.Handlers;
 
 public class HPHandler {
     public String breathingText, sightText, hearingText, heartText, disabilityText, wheelchairText, otherText;

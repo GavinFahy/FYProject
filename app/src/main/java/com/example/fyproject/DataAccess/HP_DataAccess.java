@@ -1,4 +1,4 @@
-package com.example.fyproject;
+package com.example.fyproject.DataAccess;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
