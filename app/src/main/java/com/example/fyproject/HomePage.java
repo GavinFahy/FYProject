@@ -34,17 +34,17 @@ public class HomePage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//
-//        //button that will redirect the user to the vaccinations page
-//        VButton = findViewById(R.id.Vac);
-//        VButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(HomePage.this, Vaccinations.class);
-//                startActivity(intent);
-//            }
-//        });
-//
+
+        //button that will redirect the user to the vaccinations page
+        VButton = findViewById(R.id.Vac);
+        VButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, Vaccination.class);
+                startActivity(intent);
+            }
+        });
+
         //Button that will redirect the user to the Infection's page
         IButton = findViewById(R.id.Infect);
         IButton.setOnClickListener(new View.OnClickListener() {
