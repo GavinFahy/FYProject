@@ -34,13 +34,13 @@ public class HealthProblems extends AppCompatActivity {
         HPDataAccess = new HP_DataAccess();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        final EditText Enterbreathing = findViewById(R.id.breathingText);
-        final EditText Entersight = findViewById(R.id.sightText);
-        final EditText Enterhearing = findViewById(R.id.hearingText);
-        final EditText Enterheart = findViewById(R.id.heartText);
-        final EditText Enterdisability = findViewById(R.id.disabilityText);
-        final EditText Enterwheelchair = findViewById(R.id.wheelchairText);
-        final EditText Enterother = findViewById(R.id.otherText);
+        final EditText EnterBreathing = findViewById(R.id.breathingText);
+        final EditText EnterSight = findViewById(R.id.sightText);
+        final EditText EnterHearing = findViewById(R.id.hearingText);
+        final EditText EnterHeart = findViewById(R.id.heartText);
+        final EditText EnterDisability = findViewById(R.id.disabilityText);
+        final EditText EnterWheelchair = findViewById(R.id.wheelchairText);
+        final EditText EnterOther = findViewById(R.id.otherText);
 
         final CheckBox BreathingCheck = findViewById(R.id.BreathingBox);
         final CheckBox SightCheck = findViewById(R.id.SightBox);
@@ -57,13 +57,13 @@ public class HealthProblems extends AppCompatActivity {
 
             HashMap<String, Object> data = new HashMap<>();
             //data for the text fields
-            data.put("breathingText", Enterbreathing.getText().toString());
-            data.put("sightText", Entersight.getText().toString());
-            data.put("hearingText", Enterhearing.getText().toString());
-            data.put("heartText", Enterheart.getText().toString());
-            data.put("disabilityText", Enterdisability.getText().toString());
-            data.put("wheelchairText", Enterwheelchair.getText().toString());
-            data.put("otherText", Enterother.getText().toString());
+            data.put("breathingText", EnterBreathing.getText().toString());
+            data.put("sightText", EnterSight.getText().toString());
+            data.put("hearingText", EnterHearing.getText().toString());
+            data.put("heartText", EnterHeart.getText().toString());
+            data.put("disabilityText", EnterDisability.getText().toString());
+            data.put("wheelchairText", EnterWheelchair.getText().toString());
+            data.put("otherText", EnterOther.getText().toString());
             //data for the check box's
             data.put("BreathingCheck", BreathingCheck.isChecked());
             data.put("SightCheck", SightCheck.isChecked());
@@ -98,20 +98,20 @@ public class HealthProblems extends AppCompatActivity {
                     String otherText = snapshot.child("otherText").getValue(String.class);
                     //checking to see if check boxes have been check and if so they are displayed
                     breathingCheck = Boolean.TRUE.equals(snapshot.child("BreathingCheck").getValue(Boolean.class));
-                    sightCheck = snapshot.child("SightCheck").getValue(Boolean.class);
-                    hearingCheck = snapshot.child("HearingCheck").getValue(Boolean.class);
-                    heartCheck = snapshot.child("HeartCheck").getValue(Boolean.class);
-                    disabilityCheck = snapshot.child("DisabilityCheck").getValue(Boolean.class);
-                    wheelchairCheck = snapshot.child("WheelchairCheck").getValue(Boolean.class);
-                    otherCheck = snapshot.child("OtherCheck").getValue(Boolean.class);
+                    sightCheck = Boolean.TRUE.equals(snapshot.child("SightCheck").getValue(Boolean.class));
+                    hearingCheck = Boolean.TRUE.equals(snapshot.child("HearingCheck").getValue(Boolean.class));
+                    heartCheck = Boolean.TRUE.equals(snapshot.child("HeartCheck").getValue(Boolean.class));
+                    disabilityCheck = Boolean.TRUE.equals(snapshot.child("DisabilityCheck").getValue(Boolean.class));
+                    wheelchairCheck = Boolean.TRUE.equals(snapshot.child("WheelchairCheck").getValue(Boolean.class));
+                    otherCheck = Boolean.TRUE.equals(snapshot.child("OtherCheck").getValue(Boolean.class));
 
-                    Enterbreathing.setText(breathingText);
-                    Entersight.setText(sightText);
-                    Enterhearing.setText(hearingText);
-                    Enterheart.setText(heartText);
-                    Enterdisability.setText(disabilityText);
-                    Enterwheelchair.setText(wheelchairText);
-                    Enterother.setText(otherText);
+                    EnterBreathing.setText(breathingText);
+                    EnterSight.setText(sightText);
+                    EnterHearing.setText(hearingText);
+                    EnterHeart.setText(heartText);
+                    EnterDisability.setText(disabilityText);
+                    EnterWheelchair.setText(wheelchairText);
+                    EnterOther.setText(otherText);
 
                     BreathingCheck.setChecked(breathingCheck);
                     SightCheck.setChecked(sightCheck);
