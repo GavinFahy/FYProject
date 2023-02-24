@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +24,7 @@ public class HealthProblems extends AppCompatActivity {
     private HP_DataAccess HPDataAccess;
     private DatabaseReference reference;
     private String currentUserId;
+    boolean breathingCheck, sightCheck, hearingCheck, heartCheck, disabilityCheck, wheelchairCheck, otherCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +42,21 @@ public class HealthProblems extends AppCompatActivity {
         final EditText Enterwheelchair = findViewById(R.id.wheelchairText);
         final EditText Enterother = findViewById(R.id.otherText);
 
+        final CheckBox BreathingCheck = findViewById(R.id.BreathingBox);
+        final CheckBox SightCheck = findViewById(R.id.SightBox);
+        final CheckBox HearingCheck = findViewById(R.id.HearingBox);
+        final CheckBox HeartCheck = findViewById(R.id.HeartBox);
+        final CheckBox DisabilityCheck = findViewById(R.id.DisabilityBox);
+        final CheckBox WheelchairCheck = findViewById(R.id.WheelchairBox);
+        final CheckBox OtherCheck = findViewById(R.id.OtherBox);
+
 
         Button Update = findViewById(R.id.Update);
 
         Update.setOnClickListener(V -> {
-            String breathingText = Enterbreathing.getText().toString();
-            String sightText = Entersight.getText().toString();
-            String hearingText = Enterhearing.getText().toString();
-            String heartText = Enterheart.getText().toString();
-            String disabilityText = Enterdisability.getText().toString();
-            String wheelchairText = Enterwheelchair.getText().toString();
-            String otherText = Enterother.getText().toString();
-
 
             HashMap<String, Object> data = new HashMap<>();
+            //data for the text fields
             data.put("breathingText", Enterbreathing.getText().toString());
             data.put("sightText", Entersight.getText().toString());
             data.put("hearingText", Enterhearing.getText().toString());
@@ -61,10 +64,14 @@ public class HealthProblems extends AppCompatActivity {
             data.put("disabilityText", Enterdisability.getText().toString());
             data.put("wheelchairText", Enterwheelchair.getText().toString());
             data.put("otherText", Enterother.getText().toString());
-
-            //data.put("BreathingCheck", BreathingCheck.isChecked());
-            //data.put("BreathingBox", ((CheckBox) findViewById(R.id.BreathingBox)).isChecked());
-
+            //data for the check box's
+            data.put("BreathingCheck", BreathingCheck.isChecked());
+            data.put("SightCheck", SightCheck.isChecked());
+            data.put("HearingCheck", HearingCheck.isChecked());
+            data.put("HeartCheck", HeartCheck.isChecked());
+            data.put("DisabilityCheck", DisabilityCheck.isChecked());
+            data.put("WheelchairCheck", WheelchairCheck.isChecked());
+            data.put("OtherCheck", OtherCheck.isChecked());
 
             HPDataAccess.update(currentUserId, data)
                     .addOnSuccessListener(suc -> {
@@ -77,10 +84,11 @@ public class HealthProblems extends AppCompatActivity {
 
         reference = FirebaseDatabase.getInstance().getReference("HPHandler").child(currentUserId).child("HealthProblems");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 if(snapshot.exists()){
+                    //checking if data fields exist and if so display them
                     String breathingText = snapshot.child("breathingText").getValue(String.class);
                     String sightText = snapshot.child("sightText").getValue(String.class);
                     String hearingText = snapshot.child("hearingText").getValue(String.class);
@@ -88,8 +96,14 @@ public class HealthProblems extends AppCompatActivity {
                     String disabilityText = snapshot.child("disabilityText").getValue(String.class);
                     String wheelchairText = snapshot.child("wheelchairText").getValue(String.class);
                     String otherText = snapshot.child("otherText").getValue(String.class);
-
-
+                    //checking to see if check boxes have been check and if so they are displayed
+                    breathingCheck = Boolean.TRUE.equals(snapshot.child("BreathingCheck").getValue(Boolean.class));
+                    sightCheck = snapshot.child("SightCheck").getValue(Boolean.class);
+                    hearingCheck = snapshot.child("HearingCheck").getValue(Boolean.class);
+                    heartCheck = snapshot.child("HeartCheck").getValue(Boolean.class);
+                    disabilityCheck = snapshot.child("DisabilityCheck").getValue(Boolean.class);
+                    wheelchairCheck = snapshot.child("WheelchairCheck").getValue(Boolean.class);
+                    otherCheck = snapshot.child("OtherCheck").getValue(Boolean.class);
 
                     Enterbreathing.setText(breathingText);
                     Entersight.setText(sightText);
@@ -99,8 +113,13 @@ public class HealthProblems extends AppCompatActivity {
                     Enterwheelchair.setText(wheelchairText);
                     Enterother.setText(otherText);
 
-
-//
+                    BreathingCheck.setChecked(breathingCheck);
+                    SightCheck.setChecked(sightCheck);
+                    HearingCheck.setChecked(hearingCheck);
+                    HeartCheck.setChecked(heartCheck);
+                    DisabilityCheck.setChecked(disabilityCheck);
+                    WheelchairCheck.setChecked(wheelchairCheck);
+                    OtherCheck.setChecked(otherCheck);
                 }
             }
 
