@@ -17,6 +17,7 @@ public class HomePage extends AppCompatActivity {
     private Button Maps;
     private Button HP;
     private Button MH;
+    private Button QR;
 
     private Button test;
 
@@ -85,11 +86,20 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        QR = findViewById(R.id.QR);
+        QR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, QRCode.class);
+                startActivity(intent);
+            }
+        });
+
         test = findViewById(R.id.test);
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, QRCode.class);
+                Intent intent = new Intent(HomePage.this, Testing.class);
                 startActivity(intent);
             }
         });
