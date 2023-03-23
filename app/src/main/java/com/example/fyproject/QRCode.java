@@ -33,7 +33,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 public class QRCode extends AppCompatActivity {
 
     ImageView idIVQrcode;
-    EditText idEdt;
+    EditText QRname;
     Button idBtnGenerateQR;
 
     EditText idEdtPassword;
@@ -49,7 +49,7 @@ public class QRCode extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
-        idEdt = findViewById(R.id.idEdt);
+        QRname = findViewById(R.id.QRname);
         idIVQrcode = findViewById(R.id.idIVQrcode);
         idBtnGenerateQR = findViewById(R.id.idBtnGenerateQR);
         idEdtPassword = findViewById(R.id.idEdtPassword);
@@ -87,8 +87,10 @@ public class QRCode extends AppCompatActivity {
         });
     }
 
+    //generates the QR code
     private void generateQR() {
-        String text = idEdt.getText().toString().trim();
+        //retrieves teh text that is entered into teh
+        String text = QRname.getText().toString().trim();
         MultiFormatWriter writer = new MultiFormatWriter();
         try {
             BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, 400,400);

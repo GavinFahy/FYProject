@@ -18,6 +18,7 @@ public class HomePage extends AppCompatActivity {
     private Button HP;
     private Button MH;
     private Button QR;
+    private Button health;
 
     private Button test;
 
@@ -100,6 +101,15 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomePage.this, Testing.class);
+                startActivity(intent);
+            }
+        });
+
+        health = findViewById(R.id.health);
+        health.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, Alarm.class);
                 startActivity(intent);
             }
         });

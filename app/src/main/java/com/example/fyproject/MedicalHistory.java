@@ -43,10 +43,12 @@ public class MedicalHistory extends AppCompatActivity {
             data.put("Current", EnterCurrent.getText().toString());
             CIDataAccess.update(currentUserId, data)
                     .addOnSuccessListener(suc -> {
+                        //notify the user on update success
                         Toast.makeText(this, "Successfully updated", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(error -> {
-                        Toast.makeText(this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //notify the user on update failure
+                        Toast.makeText(this, "Failed to update" + error.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
 
@@ -56,22 +58,26 @@ public class MedicalHistory extends AppCompatActivity {
             data.put("History", EnterHistory.getText().toString());
             CIDataAccess.update(currentUserId, data)
                     .addOnSuccessListener(suc -> {
+                        //if update is successful, notify the user as so
                         Toast.makeText(this, "Successfully updated", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(error -> {
-                        Toast.makeText(this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        //else notify the user that the update failed
+                        Toast.makeText(this, "Failed to update" + error.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
 
+        //references the firebase for the contents of History
         reference = FirebaseDatabase.getInstance().getReference("CIHandler").child(currentUserId).child("history");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if(snapshot.exists()){
+                    //if contents exist in the fields it gets the value
                     String currentIllness = snapshot.child("Current").getValue(String.class);
                     String medicalHistory = snapshot.child("History").getValue(String.class);
-
+                    //sets the values of the text fields to what is found in the firebase
                     EnterCurrent.setText(currentIllness);
                     EnterHistory.setText(medicalHistory);
                 }

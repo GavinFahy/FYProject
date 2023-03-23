@@ -55,7 +55,7 @@ public class HealthProblems extends AppCompatActivity {
         Button Update = findViewById(R.id.Update);
 
         Update.setOnClickListener(V -> {
-
+            //once the update button is clicked this code retrieves the data that was entered into each of these fields.
             HashMap<String, Object> data = new HashMap<>();
             //data for the text fields
             data.put("breathingText", EnterBreathing.getText().toString());
@@ -73,16 +73,18 @@ public class HealthProblems extends AppCompatActivity {
             data.put("DisabilityCheck", DisabilityCheck.isChecked());
             data.put("WheelchairCheck", WheelchairCheck.isChecked());
             data.put("OtherCheck", OtherCheck.isChecked());
-
+            //Below the code updates the fields inside firebase
             HPDataAccess.update(currentUserId, data)
                     .addOnSuccessListener(suc -> {
+                        //if successful it notifies the user.
                         Toast.makeText(this, "Successfully updated", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(error -> {
-                        Toast.makeText(this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Failed to update" + error.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
 
+        //this code is used to reference the firebase database
         reference = FirebaseDatabase.getInstance().getReference("HPHandler").child(currentUserId).child("HealthProblems");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -105,7 +107,7 @@ public class HealthProblems extends AppCompatActivity {
                     disabilityCheck = Boolean.TRUE.equals(snapshot.child("DisabilityCheck").getValue(Boolean.class));
                     wheelchairCheck = Boolean.TRUE.equals(snapshot.child("WheelchairCheck").getValue(Boolean.class));
                     otherCheck = Boolean.TRUE.equals(snapshot.child("OtherCheck").getValue(Boolean.class));
-
+                    //the text fields are set corresponding to the values found in the firebase
                     EnterBreathing.setText(breathingText);
                     EnterSight.setText(sightText);
                     EnterHearing.setText(hearingText);
@@ -113,7 +115,7 @@ public class HealthProblems extends AppCompatActivity {
                     EnterDisability.setText(disabilityText);
                     EnterWheelchair.setText(wheelchairText);
                     EnterOther.setText(otherText);
-
+                    //the check boxes are set corresponding to the values that are found in the firebase
                     BreathingCheck.setChecked(breathingCheck);
                     SightCheck.setChecked(sightCheck);
                     HearingCheck.setChecked(hearingCheck);
