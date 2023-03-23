@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.fyproject"
-        minSdk 26
+        minSdk 24
         targetSdk 31
         compileSdk 33
         versionCode 1
@@ -48,6 +48,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
+
+    implementation 'com.karumi:dexter:5.0.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'

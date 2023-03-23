@@ -96,15 +96,6 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-        test = findViewById(R.id.test);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, Testing.class);
-                startActivity(intent);
-            }
-        });
-
         health = findViewById(R.id.health);
         health.setOnClickListener(new View.OnClickListener() {
             @Override

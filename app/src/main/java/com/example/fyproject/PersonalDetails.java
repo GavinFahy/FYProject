@@ -45,6 +45,7 @@ public class PersonalDetails extends AppCompatActivity {
         Button Update = findViewById(R.id.update);
 
         Update.setOnClickListener(V -> {
+            //updates each of the fields for each element once a new text is entered in
             String name = EnterName.getText().toString();
             String age = EnterAge.getText().toString();
             String gender = EnterGender.getText().toString();
@@ -68,6 +69,7 @@ public class PersonalDetails extends AppCompatActivity {
                 return;
             }
 
+            //creating a hashmap that will store the details for each of the new entrys.
             HashMap<String, Object> data = new HashMap<>();
             data.put("Name", EnterName.getText().toString());
             data.put("Age", EnterAge.getText().toString());
@@ -78,6 +80,8 @@ public class PersonalDetails extends AppCompatActivity {
             data.put("Next_of_kin", EnterNext_of_kin.getText().toString());
             data.put("Number", EnterNextOfKinNumber.getText().toString());
 
+            //this code passes in the current users ID which is then being used to reference the correct
+            //section of the firebase db inside the personalDetails table for which users details to be updated.
             pdDataAccess.update(currentUserId, data)
                     .addOnSuccessListener(suc -> {
                         Toast.makeText(this, "Successfully updated", Toast.LENGTH_SHORT).show();
@@ -87,6 +91,7 @@ public class PersonalDetails extends AppCompatActivity {
                     });
         });
 
+        //here the textviews are initialised
         final TextView DisplayName = (TextView) findViewById(R.id.displayName);
         final TextView DisplayAge = (TextView) findViewById(R.id.displayAge);
         final TextView DisplayGender = (TextView) findViewById(R.id.displayGender);
@@ -96,12 +101,13 @@ public class PersonalDetails extends AppCompatActivity {
         final TextView DisplayNext_of_kin = (TextView) findViewById(R.id.displayNext_of_kin);
         final TextView DisplayNextOfKinNumber = (TextView) findViewById(R.id.displayNumber);
 
+        //here the firebase is referenced to gain access to the personal details elements
         reference = FirebaseDatabase.getInstance().getReference("PDHandler").child(currentUserId).child("personalDetails");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 PDHandler pdProfile = snapshot.getValue(PDHandler.class);
-
+                //then checks to see if the PDHandler is empty in the firebase and if not it then displays each of the elements
                 if(pdProfile != null){
                    String name = pdProfile.Name;
                    String age = pdProfile.Age;

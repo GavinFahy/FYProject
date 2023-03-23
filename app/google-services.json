@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "426887763695",
-    "project_id": "fyproject-14d91",
-    "storage_bucket": "fyproject-14d91.appspot.com"
+    "project_number": "661011735693",
+    "firebase_url": "https://medicalapp-f81bc-default-rtdb.firebaseio.com",
+    "project_id": "medicalapp-f81bc",
+    "storage_bucket": "medicalapp-f81bc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:426887763695:android:fa4a9d82a68dc063906d1a",
+        "mobilesdk_app_id": "1:661011735693:android:1b926e4a39d41fcda2aec4",
         "android_client_info": {
           "package_name": "com.example.fyproject"
         }
       },
       "oauth_client": [
         {
-          "client_id": "426887763695-qlevog478v1mprh47ubrgln9gii9du0r.apps.googleusercontent.com",
+          "client_id": "661011735693-2lu2dag03prinijd0nm466u042uikpo4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD_fPUPvN_MkFrqPg3AhuNnvLdtC02uEJc"
+          "current_key": "AIzaSyD27DkUboCS5dwPHNZRJNxB6lxdRsO3fy8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "426887763695-qlevog478v1mprh47ubrgln9gii9du0r.apps.googleusercontent.com",
+              "client_id": "661011735693-2lu2dag03prinijd0nm466u042uikpo4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

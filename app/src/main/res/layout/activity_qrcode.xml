@@ -13,7 +13,7 @@
     <!--Button for creating a QR code-->
 
     <ImageView
-        android:id="@+id/idIVQrcode"
+        android:id="@+id/QRImage"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerHorizontal="true"
@@ -29,7 +29,7 @@
         android:id="@+id/idEdtPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idIVQrcode"
+        android:layout_below="@id/QRImage"
         android:autofillHints=""
         android:hint="@string/enter_your_info"
         android:inputType="text"
@@ -44,7 +44,7 @@
         android:id="@+id/QRname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idIVQrcode"
+        android:layout_below="@id/QRImage"
         android:autofillHints=""
         android:hint="@string/enter_your_info"
         android:inputType="text"
@@ -76,6 +76,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.644" />
+        app:layout_constraintVertical_bias="0.584" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

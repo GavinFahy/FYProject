@@ -55,33 +55,45 @@ public class register extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void registerButton() {
+        //retrieves the email and password field contents
         String email= editEmail.getText().toString().trim();
         String password= editPassword.getText().toString().trim();
 
+        //checks to see if the email fields has been filled in
         if(email.isEmpty()){
             editEmail.setError("Email field cannot be empty!");
             editEmail.requestFocus();
             return;
         }
+
+        //checks to see if the password field has been filled in
         if(password.isEmpty()){
             editPassword.setError("Password field cannot be empty!");
             editPassword.requestFocus();
             return;
         }
+
+        //checks to see if the email is a valid email address
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             editEmail.setError("Not a valid email address!");
             editEmail.requestFocus();
             return;
         }
+
+        //checks to see if the password is of at leasst the required length of 6
         if(password.length() < 6){
             editPassword.setError("Password length must be at least 6 digits long");
             editPassword.requestFocus();
             return;
         }
+
+        //here the application uses firebase to attempt to create a new user using the details from the password and email fields
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        //once the task is complete if it is successful it will create a new
+                        //User object that stores the users password and email.
                         if(task.isSuccessful()){
                             User user = new User(email, password);
                             FirebaseDatabase.getInstance().getReference("Users")
@@ -89,16 +101,19 @@ public class register extends AppCompatActivity implements View.OnClickListener{
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
+                                            //if this task is complete successfully it returns a message saying so
                                             if(task.isSuccessful()){
                                                 Toast.makeText(register.this, "Registered successfully!", Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(register.this, login.class);
                                                 startActivity(intent);
                                             }else{
+                                                //else it returns a message saying you failed to register
                                                 Toast.makeText(register.this, "Failed to register", Toast.LENGTH_LONG).show();
                                             }
                                         }
                                     });
                         }else{
+                            //else it returns a message saying you failed to register
                             Toast.makeText(register.this, "Failed to register", Toast.LENGTH_LONG).show();
                         }
                     }

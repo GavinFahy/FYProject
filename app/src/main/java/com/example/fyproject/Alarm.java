@@ -91,9 +91,12 @@ public class Alarm extends AppCompatActivity {
 //        Toast.makeText(this, "Alarm set Successfully", Toast.LENGTH_SHORT).show();
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent = new Intent(this,AlarmReceiver.class);
+//        Intent intent = new Intent(this,AlarmReceiver.class);
+//
+//        pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
 
-        pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         if (calendar != null) { // check if calendar is not null
 

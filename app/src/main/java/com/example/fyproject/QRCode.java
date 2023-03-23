@@ -32,17 +32,15 @@ import com.journeyapps.barcodescanner.ScanOptions;
 
 public class QRCode extends AppCompatActivity {
 
-    ImageView idIVQrcode;
+    ImageView QRImage;
     EditText QRname;
     Button idBtnGenerateQR;
 
     EditText idEdtPassword;
 
-//    Button testButton;
+    Button testButton;
 
-//    private DatabaseReference reference;
-
-//String correctPassword = "password123";
+    private String currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -50,7 +48,7 @@ public class QRCode extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode);
 
         QRname = findViewById(R.id.QRname);
-        idIVQrcode = findViewById(R.id.idIVQrcode);
+        QRImage = findViewById(R.id.QRImage);
         idBtnGenerateQR = findViewById(R.id.idBtnGenerateQR);
         idEdtPassword = findViewById(R.id.idEdtPassword);
 
@@ -59,10 +57,10 @@ public class QRCode extends AppCompatActivity {
             checkPassword(password);
         });
 
-//        testButton = findViewById(R.id.testButton);
-//        testButton.setOnClickListener(V->{
-//            scanCode();
-//        });
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        testButton = findViewById(R.id.testButton);
+        testButton.setOnClickListener(V -> scanCode());
     }
 
     private void checkPassword(String password) {
@@ -93,166 +91,124 @@ public class QRCode extends AppCompatActivity {
         String text = QRname.getText().toString().trim();
         MultiFormatWriter writer = new MultiFormatWriter();
         try {
+            //Here the text string is being encoded as a QR code
             BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, 400,400);
-
+            //converts teh bitmatrix into a bitmap image
             BarcodeEncoder encoder = new BarcodeEncoder();
+            //returns a bitmap object that represents the QR code image
             Bitmap bitmap = encoder.createBitmap(matrix);
-            idIVQrcode.setImageBitmap(bitmap);
+            //setting the bitmap image as the QRImage so it will be displayed
+            QRImage.setImageBitmap(bitmap);
         }catch (WriterException e){
             e.printStackTrace();
         }
 
     }
 
-//    private void generateQR() {
-//        final String[] text = {idEdt.getText().toString().trim()};
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
-//        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                String userEmail = snapshot.child("email").getValue(String.class);
-//                text[0] += "&email=" + userEmail; // Add user's email to the QR code text
-//                MultiFormatWriter writer = new MultiFormatWriter();
-//                try {
-//                    BitMatrix matrix = writer.encode(text[0], BarcodeFormat.QR_CODE, 400,400);
-//
-//                    BarcodeEncoder encoder = new BarcodeEncoder();
-//                    Bitmap bitmap = encoder.createBitmap(matrix);
-//                    idIVQrcode.setImageBitmap(bitmap);
-//                }catch (WriterException e){
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(QRCode.this, "Error retrieving user details", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    private void scanCode() {
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Volume up to flash on");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureAct.class);
+        barLauncher.launch(options);
+    }
+
+    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        if (result.getContents() != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(QRCode.this);
+            builder.setTitle("Result");
+            builder.setMessage(result.getContents());
+            //when the button is clicked an alert dialog is presented to the screen asking if they would like to compose an email.
+            builder.setPositiveButton("Compose Email", new DialogInterface.OnClickListener() {
+                //once the button is clicked it opens an intent that redirects the user to their email app of choice
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    //this line uses an intent to open an email application on the users mobile device
+                    intent.setData(Uri.parse("mailto:"));
+                    //this line of code sets the result value which is the name of the email to the contents of the to section of the email
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{result.getContents()});
+                    //this sets the subject of teh email to QR code scan
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "QR Code Scan");
+
+                    //this code references firebase for where the personalDetails reside on the current users id.
+                    DatabaseReference pdRef = FirebaseDatabase.getInstance().getReference("PDHandler").child(currentUserId).child("personalDetails");
+                    pdRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            //teh below code is used to reference each element that resides inside the personal details table and then,
+                            //prints them into the body of the email.
+                            StringBuilder emailbody = new StringBuilder();
+                            emailbody.append("Name: ").append(snapshot.child("Name").getValue(String.class)).append("\n");
+                            emailbody.append("Age: ").append(snapshot.child("Age").getValue(String.class)).append("\n");
+                            emailbody.append("Gender: ").append(snapshot.child("Gender").getValue(String.class)).append("\n");
+                            emailbody.append("Weight: ").append(snapshot.child("Weight").getValue(String.class)).append("\n");
+                            emailbody.append("Phone Number: ").append(snapshot.child("PhoneNumber").getValue(String.class)).append("\n");
+                            emailbody.append("Consultant: ").append(snapshot.child("Consultant").getValue(String.class)).append("\n");
+                            emailbody.append("Next of Kin: ").append(snapshot.child("Next_of_kin").getValue(String.class)).append("\n");
+                            emailbody.append("Number: ").append(snapshot.child("Number").getValue(String.class)).append("\n");
+
+                            DatabaseReference hpRef = FirebaseDatabase.getInstance().getReference("HPHandler").child(currentUserId).child("HealthProblems");
+                            hpRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    emailbody.append("Health Problems: \n");
+                                    emailbody.append("Breathing: ").append(snapshot.child("breathingText").getValue(String.class)).append("\n");
+                                    emailbody.append("Sight: ").append(snapshot.child("sightText").getValue(String.class)).append("\n");
+                                    emailbody.append("Hearing: ").append(snapshot.child("hearingText").getValue(String.class)).append("\n");
+                                    emailbody.append("Heart: ").append(snapshot.child("heartText").getValue(String.class)).append("\n");
+                                    emailbody.append("Disability: ").append(snapshot.child("disabilityText").getValue(String.class)).append("\n");
+                                    emailbody.append("Wheelchair: ").append(snapshot.child("wheelchairText").getValue(String.class)).append("\n");
+                                    emailbody.append("Other: ").append(snapshot.child("otherText").getValue(String.class)).append("\n");
+                                    emailbody.append("\n");
 
 
-//    private void scanCode() {
-//        ScanOptions options = new ScanOptions();
-//        options.setPrompt("Volume up to flash on");
-//        options.setBeepEnabled(true);
-//        options.setOrientationLocked(true);
-//        options.setCaptureActivity(CaptureAct.class);
-//        barLauncher.launch(options);
-//    }
-//
-////    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-////        if(result.getContents() != null)
-////        {
-////            AlertDialog.Builder builder = new AlertDialog.Builder(QRCode.this);
-////            builder.setTitle("Result");
-////            builder.setMessage(result.getContents());
-////            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-////                @Override
-////                public void onClick(DialogInterface dialogInterface, int i) {
-////                    dialogInterface.dismiss();
-////                }
-////            }).show();
-////        }
-////        if(result.getContents() != null)
-////        {
-////            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-////                    "mailto", "", null));
-////            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "QR Code Scan Result");
-////            emailIntent.putExtra(Intent.EXTRA_TEXT, result.getContents());
-////            emailIntent.setPackage("com.google.android.gm");
-////            startActivity(Intent.createChooser(emailIntent, "Send email..."));
-////        }
-////    });
-////    });
-////
-////    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-////        if(result.getContents() != null)
-////        {
-////            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-////            DatabaseReference personalDetailsRef = FirebaseDatabase.getInstance().getReference("PDHandler").child(currentUserId).child("personalDetails");
-////            personalDetailsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-////                @Override
-////                public void onDataChange(@NonNull DataSnapshot snapshot) {
-////                    String name = snapshot.child("Name").getValue(String.class);
-////                    String age = snapshot.child("Age").getValue(String.class);
-////                    String gender = snapshot.child("Gender").getValue(String.class);
-////                    String weight = snapshot.child("Weight").getValue(String.class);
-////                    String phoneNumber = snapshot.child("PhoneNumber").getValue(String.class);
-////                    String consultant = snapshot.child("Consultant").getValue(String.class);
-////                    String nextOfKin = snapshot.child("Next_of_kin").getValue(String.class);
-////                    String nextOfKinNumber = snapshot.child("Number").getValue(String.class);
-////
-////                    String emailBody = "Name: " + name + "\n" +
-////                            "Age: " + age + "\n" +
-////                            "Gender: " + gender + "\n" +
-////                            "Weight: " + weight + "\n" +
-////                            "Phone Number: " + phoneNumber + "\n" +
-////                            "Consultant: " + consultant + "\n" +
-////                            "Next of Kin: " + nextOfKin + "\n" +
-////                            "Next of Kin Number: " + nextOfKinNumber;
-////
-////                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-////                            "mailto", "", null));
-////                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "QR Code Scan Result");
-////                    emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
-////                    emailIntent.setPackage("com.google.android.gm");
-////                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
-////                }
-////
-////                @Override
-////                public void onCancelled(@NonNull DatabaseError error) {
-////                    Toast.makeText(QRCode.this, "Error retrieving user details", Toast.LENGTH_SHORT).show();
-////                }
-////            });
-////        }
-////    });
-//
-//
-//
-//        ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-//        if(result.getContents() != null)
-//        {
-//
-//            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//            reference = FirebaseDatabase.getInstance().getReference("PDHandler").child(currentUserId).child("personalDetails");
-//            reference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    String Name = snapshot.child("Name").getValue(String.class);
-////                    String Age = snapshot.child("Age").getValue(String.class);
-////                    String Gender = snapshot.child("Gender").getValue(String.class);
-////                    String Weight = snapshot.child("Weight").getValue(String.class);
-////                    String PhoneNumber = snapshot.child("PhoneNumber").getValue(String.class);
-////                    String Consultant = snapshot.child("Consultant").getValue(String.class);
-////                    String Next_of_kin = snapshot.child("Next_of_kin").getValue(String.class);
-////                    String Number = snapshot.child("Number").getValue(String.class);
-//
-////                    String emailBody = "Name: " + Name + "\n" +
-////                            "Age: " + Age + "\n" +
-////                            "Gender: " + Gender + "\n" +
-////                            "Weight: " + Weight + "\n" +
-////                            "Phone Number: " + PhoneNumber + "\n" +
-////                            "Consultant: " + Consultant + "\n" +
-////                            "Next of Kin: " + Next_of_kin + "\n" +
-////                            "Next of Kin Number: " + Number;
-//
-//                    String emailBody = "Name: " + Name;
-//
-//                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-//                            "mailto", "", null));
-//                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "QR Code Scan Result");
-//                    emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
-//                    emailIntent.setPackage("com.google.android.gm");
-//                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                    Toast.makeText(QRCode.this, "Error retrieving user details", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-//    });
+                                    DatabaseReference ciRef = FirebaseDatabase.getInstance().getReference("CIHandler").child(currentUserId).child("history");
+                                    ciRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                            emailbody.append("Current: ").append(snapshot.child("Current").getValue(String.class)).append("\n");
+                                            emailbody.append("History: ").append(snapshot.child("History").getValue(String.class)).append("\n");
+
+                                            emailbody.append("\n\nQR Code contents: ").append(result.getContents());
+
+                                            intent.putExtra(Intent.EXTRA_TEXT, emailbody.toString());
+                                            startActivity(intent);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(QRCode.this, "Error retrieving Medical history", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(QRCode.this, "Error retrieving health problems", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(QRCode.this, "Error retrieving personal details", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            }).show();
+        }
+    });
 }
