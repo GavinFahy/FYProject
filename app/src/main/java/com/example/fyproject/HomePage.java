@@ -100,7 +100,7 @@ public class HomePage extends AppCompatActivity {
         health.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, Alarm.class);
+                Intent intent = new Intent(HomePage.this, HealthCare.class);
                 startActivity(intent);
             }
         });

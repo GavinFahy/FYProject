@@ -141,6 +141,7 @@ public class QRCode extends AppCompatActivity {
                             //teh below code is used to reference each element that resides inside the personal details table and then,
                             //prints them into the body of the email.
                             StringBuilder emailbody = new StringBuilder();
+                            emailbody.append("\nPersonal Details: \n");
                             emailbody.append("Name: ").append(snapshot.child("Name").getValue(String.class)).append("\n");
                             emailbody.append("Age: ").append(snapshot.child("Age").getValue(String.class)).append("\n");
                             emailbody.append("Gender: ").append(snapshot.child("Gender").getValue(String.class)).append("\n");
@@ -149,12 +150,13 @@ public class QRCode extends AppCompatActivity {
                             emailbody.append("Consultant: ").append(snapshot.child("Consultant").getValue(String.class)).append("\n");
                             emailbody.append("Next of Kin: ").append(snapshot.child("Next_of_kin").getValue(String.class)).append("\n");
                             emailbody.append("Number: ").append(snapshot.child("Number").getValue(String.class)).append("\n");
+                            emailbody.append("\n");
 
                             DatabaseReference hpRef = FirebaseDatabase.getInstance().getReference("HPHandler").child(currentUserId).child("HealthProblems");
                             hpRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    emailbody.append("Health Problems: \n");
+                                    emailbody.append("\nHealth Problems: \n");
                                     emailbody.append("Breathing: ").append(snapshot.child("breathingText").getValue(String.class)).append("\n");
                                     emailbody.append("Sight: ").append(snapshot.child("sightText").getValue(String.class)).append("\n");
                                     emailbody.append("Hearing: ").append(snapshot.child("hearingText").getValue(String.class)).append("\n");
@@ -169,14 +171,137 @@ public class QRCode extends AppCompatActivity {
                                     ciRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                                            emailbody.append("\nMedical History: \n");
                                             emailbody.append("Current: ").append(snapshot.child("Current").getValue(String.class)).append("\n");
                                             emailbody.append("History: ").append(snapshot.child("History").getValue(String.class)).append("\n");
+                                            emailbody.append("\n");
 
-                                            emailbody.append("\n\nQR Code contents: ").append(result.getContents());
+                                            DatabaseReference iRef = FirebaseDatabase.getInstance().getReference("IHandler").child(currentUserId).child("Infections");
+                                            iRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    emailbody.append("\nInfections: \n");
+                                                    emailbody.append("Have you had any of these communicable infections: \n");
+                                                    emailbody.append("Measles: ").append(snapshot.child("MeaslesboX").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Mumps: ").append(snapshot.child("MumpsBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Rubella: ").append(snapshot.child("RubellaBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Chickenpox: ").append(snapshot.child("ChickenpoxBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Pertussis: ").append(snapshot.child("PertussisBox").getValue(Boolean.class)).append("\n");
 
-                                            intent.putExtra(Intent.EXTRA_TEXT, emailbody.toString());
-                                            startActivity(intent);
+                                                    emailbody.append("Have you had any of these communicable infections in the last 4 weeks: \n");
+                                                    emailbody.append("Measles: ").append(snapshot.child("MeaslesBox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Mumps: ").append(snapshot.child("MumpsBox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Rubella: ").append(snapshot.child("RubellaBox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Chickenpox: ").append(snapshot.child("ChickenpoxBox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Pertussis: ").append(snapshot.child("PertussisBox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Gastroenteritis: ").append(snapshot.child("GastroenteritisBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Viral Respiratory Illness: ").append(snapshot.child("VRIBox").getValue(Boolean.class)).append("\n");
+
+                                                    emailbody.append("In the last 72 hours have you: \n");
+                                                    emailbody.append("Vomit: ").append(snapshot.child("VomitBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Last episode: ").append(snapshot.child("EnterVomit").getValue(String.class)).append("\n");
+                                                    emailbody.append("Diarrhoea: ").append(snapshot.child("DiarrhoeaBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Last episode: ").append(snapshot.child("EnterDiarrhoea").getValue(String.class)).append("\n");
+
+                                                    emailbody.append("Have you been colonised by organisms: ").append(snapshot.child("OrganismsBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("MRSA: ").append(snapshot.child("MRSABox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("ESBL: ").append(snapshot.child("ESBLBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("VRE: ").append(snapshot.child("VREBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("CRE: ").append(snapshot.child("CREBox").getValue(Boolean.class)).append("\n");
+
+                                                    emailbody.append("Transfer from other hospital: ").append(snapshot.child("TransferBox").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Hospital: ").append(snapshot.child("EnterHospital").getValue(String.class)).append("\n");
+
+                                                    emailbody.append("In need of single Isolation room: \n");
+                                                    emailbody.append("Yes: ").append(snapshot.child("IsolationBoxYes").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("No: ").append(snapshot.child("IsolationBoxNo").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("IsolationReason: ").append(snapshot.child("IsolationReason").getValue(String.class)).append("\n");
+
+                                                    emailbody.append("have you been a patient in another hospital in the past 12 months: \n");
+                                                    emailbody.append("Yes: ").append(snapshot.child("OtherHospitalBoxYes").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("No: ").append(snapshot.child("OtherHospitalBoxNo").getValue(Boolean.class)).append("\n");
+
+                                                    emailbody.append("If yes, have the relevant screens been obtained: \n");
+                                                    emailbody.append("MRSA: ").append(snapshot.child("MRSABox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Date: ").append(snapshot.child("MRSADate").getValue(String.class)).append("\n");
+                                                    emailbody.append("MRGNB: ").append(snapshot.child("MRGNBBox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Date: ").append(snapshot.child("MRGNBDate").getValue(String.class)).append("\n");
+                                                    emailbody.append("VRE: ").append(snapshot.child("VREBox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Date: ").append(snapshot.child("VREDate").getValue(String.class)).append("\n");
+                                                    emailbody.append("CRE: ").append(snapshot.child("CREBox2").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("Date: ").append(snapshot.child("CREDate").getValue(String.class)).append("\n");
+
+                                                    emailbody.append("Immunocompromised: \n");
+                                                    emailbody.append("Yes: ").append(snapshot.child("ImmunocompromisedBoxYes").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("No: ").append(snapshot.child("ImmunocompromisedBoxNo").getValue(Boolean.class)).append("\n");
+                                                    emailbody.append("ImmunocompromisedReason: ").append(snapshot.child("ImmunocompromisedReason").getValue(String.class)).append("\n");
+                                                    emailbody.append("\n");
+
+                                                    DatabaseReference VRef = FirebaseDatabase.getInstance().getReference("VHandler").child(currentUserId).child("Vaccination");
+                                                    VRef.addListenerForSingleValueEvent(new ValueEventListener(){
+
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                            emailbody.append("\nVaccinations: \n");
+                                                            emailbody.append("At 2 months old: \n");
+                                                            emailbody.append("PCV13: ").append(snapshot.child("PCV13Box1").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("MenB: ").append(snapshot.child("MenBBox1").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("Rotavirus: ").append(snapshot.child("RotavirusBox1").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("6 in 1 First dose: ").append(snapshot.child("sixINoneBox1").getValue(Boolean.class)).append("\n");
+
+                                                            emailbody.append("At 4 months old: \n");
+                                                            emailbody.append("6 in 1 Second dose: ").append(snapshot.child("sixINoneBox2").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("MenB: ").append(snapshot.child("MenBBox2").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("Rotavirus: ").append(snapshot.child("RotavirusBox2").getValue(Boolean.class)).append("\n");
+
+                                                            emailbody.append("At 6 months old: \n");
+                                                            emailbody.append("6 in 1 third dose: ").append(snapshot.child("sixINoneBox3").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("PCV13: ").append(snapshot.child("PCV13Box2").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("MenC: ").append(snapshot.child("MenCBox1").getValue(Boolean.class)).append("\n");
+
+                                                            emailbody.append("At 12 months old: \n");
+                                                            emailbody.append("MMR: ").append(snapshot.child("MMRBox1").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("MenB: ").append(snapshot.child("MenBBox3").getValue(Boolean.class)).append("\n");
+
+                                                            emailbody.append("At 12+ months old: \n");
+                                                            emailbody.append("Hib/MenC: ").append(snapshot.child("HibMenCBox").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("PCV13: ").append(snapshot.child("PCV13Box3").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("MenB: ").append(snapshot.child("MenBBox4").getValue(Boolean.class)).append("\n");
+
+                                                            emailbody.append("At 4 to 5 years: \n");
+                                                            emailbody.append("4 in 1 vaccine: ").append(snapshot.child("fourINoneBox1").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("MMR: ").append(snapshot.child("MMRBox2").getValue(Boolean.class)).append("\n");
+
+                                                            emailbody.append("At 12 to 14 years: \n");
+                                                            emailbody.append("HPV: ").append(snapshot.child("HPVBox1").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("Tdap: ").append(snapshot.child("TdapBox1").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("MenAcwy: ").append(snapshot.child("MenACWYBox1").getValue(Boolean.class)).append("\n");
+
+                                                            emailbody.append("Other: \n");
+                                                            emailbody.append("Flu Vaccine: ").append(snapshot.child("FluBox1").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("Covid 19: ").append(snapshot.child("CovidBox").getValue(Boolean.class)).append("\n");
+                                                            emailbody.append("Swine Flue: ").append(snapshot.child("SwineFluBox").getValue(Boolean.class)).append("\n");
+
+                                                            emailbody.append("\n\nQR Code contents: ").append(result.getContents());
+
+                                                            intent.putExtra(Intent.EXTRA_TEXT, emailbody.toString());
+                                                            startActivity(intent);
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+                                                            Toast.makeText(QRCode.this, "Error retrieving Vaccination data", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                    Toast.makeText(QRCode.this, "Error retrieving infections data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
                                         }
 
                                         @Override

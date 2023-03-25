@@ -34,110 +34,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-//    LocationManager locationManager;
-//    LocationListener locationListener;
-//    LatLng userLatLong;
-//
-//    private GoogleMap mMap;
-//    private ActivityMapsBinding binding;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
-//
-//        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-//
-//
-//    }
-//
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//
-//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-//        locationListener = new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                //store user LatLong
-//                userLatLong = new LatLng(location.getLatitude(),location.getLongitude());
-//                mMap.clear(); //clear old location marker in google map
-//                mMap.addMarker(new MarkerOptions().position(userLatLong).title("Your location"));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLong));
-//
-//            }
-//
-//            @Override
-//            public void onStatusChanged(String provider, int status, Bundle extras){
-//
-//            }
-//
-//            @Override
-//            public void onProviderEnabled(String provider){
-//
-//            }
-//
-//            @Override
-//            public void onProviderDisabled(String provider){
-//
-//            }
-//        };
-//
-//        // Check if location permission is granted
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            // Request permission if not granted
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    1);
-//        } else {
-//            // Request location updates
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-//        }
-//
-//        //ask for permission with user / location permission
-////        askLocationPermission();
-//    }
-
-//    private void askLocationPermission() {
-//        Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener(){
-//            @Override
-//            public void onPermissionGranted(PermissionGrantedResponse response){
-//                if(ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    return;
-//                }
-//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-//
-//                //getting user last location to set the default location marker in the map
-//                Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                userLatLong = new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude());
-//                mMap.clear(); //clear old location marker in google map
-//                mMap.addMarker(new MarkerOptions().position(userLatLong).title("Your location"));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLong));
-//            }
-//
-//            @Override
-//            public void onPermissionDenied(PermissionDeniedResponse response){
-//
-//            }
-//
-//            @Override
-//            public void onPermissionRationaleShouldBeShown(com.karumi.dexter.listener.PermissionRequest permission, PermissionToken token) {
-//
-//            }
-//
-//            @Override
-//            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token){
-//                token.continuePermissionRequest();
-//            }
-//        }).check();
-//    }
-
     private static final String TAG = "MapsActivity";
     private static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
@@ -221,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Request location updates
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
