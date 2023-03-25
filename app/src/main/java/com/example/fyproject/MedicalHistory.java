@@ -30,10 +30,13 @@ public class MedicalHistory extends AppCompatActivity {
         setContentView(R.layout.activity_medical_history);
 
         CIDataAccess = new CI_DataAccess();
+        //retrieves the users UUID
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //initials the text fields with Unique IDS
         final EditText EnterCurrent = findViewById(R.id.Current);
         final EditText EnterHistory = findViewById(R.id.History);
+
         Button UpdateCurrent = findViewById(R.id.UpdateCurrent);
         Button UpdateHistory = findViewById(R.id.UpdateHistory);
 
@@ -83,6 +86,7 @@ public class MedicalHistory extends AppCompatActivity {
                 }
             }
 
+            //notify the user if something went wrong
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MedicalHistory.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();

@@ -33,8 +33,10 @@ public class Vaccination extends AppCompatActivity {
         setContentView(R.layout.activity_vacinations);
 
         VDataAccess = new V_DataAccess();
+        //retrieving the current users ID from firebase
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //initials the check box's with Unique IDS
         final CheckBox PCV13Box1 = findViewById(R.id.PCV13Box1);
         final CheckBox MenBBox1 = findViewById(R.id.MenBBox1);
         final CheckBox RotavirusBox1 = findViewById(R.id.RotavirusBox1);
@@ -60,7 +62,7 @@ public class Vaccination extends AppCompatActivity {
         final CheckBox SwineFluBox = findViewById(R.id.SwineFluBox);
 
         Button Update = findViewById(R.id.Update);
-
+        //listens for the update button to be clicked
         Update.setOnClickListener(V -> {
 
             HashMap<String, Object> data = new HashMap<>();
@@ -89,6 +91,7 @@ public class Vaccination extends AppCompatActivity {
             data.put("CovidBox", CovidBox.isChecked());
             data.put("SwineFluBox", SwineFluBox.isChecked());
 
+            //update the date where the uuid matches the current users UUID
             VDataAccess.update(currentUserId, data)
                     .addOnSuccessListener(suc -> {
                         Toast.makeText(this, "Successfully updated", Toast.LENGTH_SHORT).show();
@@ -98,6 +101,7 @@ public class Vaccination extends AppCompatActivity {
                     });
         });
 
+        //references the firebase for the details inside the vaccination table where the UUID matches the curentUserId
         reference = FirebaseDatabase.getInstance().getReference("VHandler").child(currentUserId).child("Vaccination");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -129,7 +133,7 @@ public class Vaccination extends AppCompatActivity {
                     covidBox = Boolean.TRUE.equals(snapshot.child("CovidBox").getValue(Boolean.class));
                     swineFluBox = Boolean.TRUE.equals(snapshot.child("SwineFluBox").getValue(Boolean.class));
 
-
+                    //sets the state of the check boxs of the page
                     PCV13Box1.setChecked(pCV13Box1);
                     MenBBox1.setChecked(menBBox1);
                     RotavirusBox1.setChecked(rotavirusBox1);
@@ -155,6 +159,7 @@ public class Vaccination extends AppCompatActivity {
                     SwineFluBox.setChecked(swineFluBox);
                 }
             }
+            //notify the user if something went wrong
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(Vaccination.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();

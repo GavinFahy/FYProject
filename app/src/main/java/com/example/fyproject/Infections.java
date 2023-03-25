@@ -24,9 +24,9 @@ public class Infections extends AppCompatActivity {
     private I_DataAccess IDataAccess;
     private DatabaseReference reference;
     private String currentUserId;
-    boolean measlesboX, mumpsBox, rubellaBox, chickenpoxBox, pertussisBox, measlesBox2, mumpsBox2, rubellaBox2, chickenpoxBox2, pertussisBox2, gastroenteritisBox,
-            vRIBox, vomitBox, diarrhoeaBox, organismsBox, mRSABox, eSBLBox, vREBox, cREBox, transferBox, isolationBoxYes, isolationBoxNo, otherHospitalBoxYes,
-            otherHospitalBoxNo, mRSABox2, mRGNBBox2, cREBox2, vREBox2, immunocompromisedBoxYes, immunocompromisedBoxNo;
+//    boolean measlesboX, mumpsBox, rubellaBox, chickenpoxBox, pertussisBox, measlesBox2, mumpsBox2, rubellaBox2, chickenpoxBox2, pertussisBox2, gastroenteritisBox,
+//            vRIBox, vomitBox, diarrhoeaBox, organismsBox, mRSABox, eSBLBox, vREBox, cREBox, transferBox, isolationBoxYes, isolationBoxNo, otherHospitalBoxYes,
+//            otherHospitalBoxNo, mRSABox2, mRGNBBox2, cREBox2, vREBox2, immunocompromisedBoxYes, immunocompromisedBoxNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -34,9 +34,10 @@ public class Infections extends AppCompatActivity {
         setContentView(R.layout.infections);
 
         IDataAccess = new I_DataAccess();
+        //retrieves the users UUID
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //check for text fields
+        //initials the text fields with Unique IDS
         final EditText EnterVomit = findViewById(R.id.EnterVomit);
         final EditText EnterDiarrhoea = findViewById(R.id.EnterDiarrhoea);
         final EditText EnterHospital = findViewById(R.id.EnterHospital);
@@ -46,7 +47,7 @@ public class Infections extends AppCompatActivity {
         final EditText CREDate = findViewById(R.id.CREDate);
         final EditText VREDate = findViewById(R.id.VREDate);
         final EditText ImmunocompromisedReason = findViewById(R.id.ImmunocompromisedReason);
-        //checks for check box's
+        //initials the check box's with Unique IDS
         final CheckBox MeaslesboX = findViewById(R.id.MeaslesboX);
         final CheckBox MumpsBox = findViewById(R.id.MumpsBox);
         final CheckBox RubellaBox = findViewById(R.id.RubellaBox);
@@ -126,6 +127,7 @@ public class Infections extends AppCompatActivity {
             data.put("ImmunocompromisedBoxYes", ImmunocompromisedBoxYes.isChecked());
             data.put("ImmunocompromisedBoxNo", ImmunocompromisedBoxNo.isChecked());
 
+            //update the date where the uuid matches the current users UUID
             IDataAccess.update(currentUserId, data)
                     .addOnSuccessListener(suc -> {
                         Toast.makeText(this, "Successfully updated", Toast.LENGTH_SHORT).show();
@@ -135,6 +137,7 @@ public class Infections extends AppCompatActivity {
                     });
         });
 
+        //references the infections table where the UUID matches
         reference = FirebaseDatabase.getInstance().getReference("IHandler").child(currentUserId).child("Infections");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -190,7 +193,7 @@ public class Infections extends AppCompatActivity {
                     immunocompromisedBoxNo = Boolean.TRUE.equals(snapshot.child("ImmunocompromisedBoxNo").getValue(Boolean.class));
 
 
-
+                    //sets the state of the text fields of the page
                     EnterVomit.setText(enterVomit);
                     EnterDiarrhoea.setText(enterDiarrhoea);
                     EnterHospital.setText(enterHospital);
@@ -201,6 +204,7 @@ public class Infections extends AppCompatActivity {
                     VREDate.setText(vREDate);
                     ImmunocompromisedReason.setText(immunocompromisedReason);
 
+                    //sets the state of the check boxs of the page
                     MeaslesboX.setChecked(measlesboX);
                     MumpsBox.setChecked(mumpsBox);
                     RubellaBox.setChecked(rubellaBox);

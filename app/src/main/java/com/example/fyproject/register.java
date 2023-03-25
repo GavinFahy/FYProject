@@ -31,6 +31,7 @@ public class register extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
 
+        //initials the UI elements of the page + sets up the click listeners
         mAuth = FirebaseAuth.getInstance();
 
         login_link = (TextView) findViewById(R.id.login_link);
@@ -46,9 +47,11 @@ public class register extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch(v.getId()){
+            //when the link is clicked it will bring the user to the login page
             case R.id.login_link:
                 startActivity(new Intent(this, login.class));
                 break;
+                //if register button is selected go to the registerButton activity
             case R.id.registerButton:
                 registerButton();
         }

@@ -111,6 +111,64 @@
             android:layout_height="wrap_content"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"/>
+
+        <EditText
+            android:id="@+id/Agefield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Age:"
+            android:inputType="number" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/bloodMen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/bloodFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female" />
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/Systolic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Systolic:"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/Diastolic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Diastolic:"
+            android:inputType="number" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calculate"
+            android:onClick="calculateBloodButton" />
+
+        <TextView
+            android:id="@+id/bloodresult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+
     </LinearLayout>
 
 </ScrollView>

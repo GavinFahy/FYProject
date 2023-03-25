@@ -29,6 +29,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        //initials the UI elements of the page + sets up the click listeners
         register_link = (TextView) findViewById(R.id.register_link);
         register_link.setOnClickListener(this);
 
@@ -37,17 +38,18 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
         editEmail = (EditText) findViewById(R.id.email);
         editPassword = (EditText) findViewById(R.id.password);
-
+        //initials the firebase
         mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            //when the link is clicked it will bring the user to the register page
             case R.id.register_link:
                 startActivity(new Intent(this, register.class));
                 break;
-
+                //if login button selected go to the login activity
             case R.id.LoginButton:
                 userLogin();
                 break;

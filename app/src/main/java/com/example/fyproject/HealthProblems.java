@@ -33,8 +33,10 @@ public class HealthProblems extends AppCompatActivity {
         setContentView(R.layout.activity_health_problems);
 
         HPDataAccess = new HP_DataAccess();
+        //retrieves the users UUID
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //initials the text fields with Unique IDS
         final EditText EnterBreathing = findViewById(R.id.breathingText);
         final EditText EnterSight = findViewById(R.id.sightText);
         final EditText EnterHearing = findViewById(R.id.hearingText);
@@ -43,6 +45,7 @@ public class HealthProblems extends AppCompatActivity {
         final EditText EnterWheelchair = findViewById(R.id.wheelchairText);
         final EditText EnterOther = findViewById(R.id.otherText);
 
+        //initials the check box's with Unique IDS
         final CheckBox BreathingCheck = findViewById(R.id.BreathingBox);
         final CheckBox SightCheck = findViewById(R.id.SightBox);
         final CheckBox HearingCheck = findViewById(R.id.HearingBox);
@@ -55,7 +58,7 @@ public class HealthProblems extends AppCompatActivity {
         Button Update = findViewById(R.id.Update);
 
         Update.setOnClickListener(V -> {
-            //once the update button is clicked this code retrieves the data that was entered into each of these fields.
+            //listens for the update button to be selected
             HashMap<String, Object> data = new HashMap<>();
             //data for the text fields
             data.put("breathingText", EnterBreathing.getText().toString());
@@ -84,7 +87,7 @@ public class HealthProblems extends AppCompatActivity {
                     });
         });
 
-        //this code is used to reference the firebase database
+        //this code is used to reference the firebase database for the HelathProblems table on the users UUID
         reference = FirebaseDatabase.getInstance().getReference("HPHandler").child(currentUserId).child("HealthProblems");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -126,6 +129,7 @@ public class HealthProblems extends AppCompatActivity {
                 }
             }
 
+            //notify the user ifd something went wrong
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(HealthProblems.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();

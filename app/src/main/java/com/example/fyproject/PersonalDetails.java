@@ -32,8 +32,10 @@ public class PersonalDetails extends AppCompatActivity {
         setContentView(R.layout.personal_details);
 
         pdDataAccess = new PD_DataAccess();
+        //retrieving the current users ID from firebase
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //assigning edittext views to the variables inside.
         final EditText EnterName = findViewById(R.id.Name);
         final EditText EnterAge = findViewById(R.id.Age);
         final EditText EnterGender = findViewById(R.id.Gender);
@@ -127,7 +129,7 @@ public class PersonalDetails extends AppCompatActivity {
                    DisplayNextOfKinNumber.setText(number);
                 }
             }
-
+            //If something goes wrong the user is notified
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(PersonalDetails.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();

@@ -6,7 +6,6 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fyproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomePage extends AppCompatActivity {
@@ -20,10 +19,9 @@ public class HomePage extends AppCompatActivity {
     private Button QR;
     private Button health;
 
-    private Button test;
+    private Button alarm;
 
     FirebaseAuth Authorisation;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -60,6 +58,7 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        //Button that will redirect the user to the Map page
         Maps = findViewById(R.id.Maps);
         Maps.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +68,7 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        //Button that will redirect the user to the HealthProblems page
         HP = findViewById(R.id.HP);
         HP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +78,7 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        //Button that will redirect the user to the MedicalHistory page
         MH = findViewById(R.id.MH);
         MH.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +88,7 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        //Button that will redirect the user to the QRcode+scanner page
         QR = findViewById(R.id.QR);
         QR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,11 +98,22 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        //Button that will redirect the user to the HealthCare page
         health = findViewById(R.id.health);
         health.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomePage.this, HealthCare.class);
+                startActivity(intent);
+            }
+        });
+
+        //Button that will redirect the user to the alarm page
+        alarm = findViewById(R.id.alarm);
+        alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, Alarm.class);
                 startActivity(intent);
             }
         });
