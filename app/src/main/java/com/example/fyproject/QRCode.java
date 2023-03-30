@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,8 +38,6 @@ public class QRCode extends AppCompatActivity {
     EditText QRname;
     Button idBtnGenerateQR;
 
-    EditText idEdtPassword;
-
     Button testButton;
 
     private String currentUserId;
@@ -50,11 +50,10 @@ public class QRCode extends AppCompatActivity {
         QRname = findViewById(R.id.QRname);
         QRImage = findViewById(R.id.QRImage);
         idBtnGenerateQR = findViewById(R.id.idBtnGenerateQR);
-        idEdtPassword = findViewById(R.id.idEdtPassword);
 
         idBtnGenerateQR.setOnClickListener(v ->{
-            String password = idEdtPassword.getText().toString().trim();
-            checkPassword(password);
+            String email = QRname.getText().toString().trim();
+            checkEmail(email);
         });
 
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -63,18 +62,18 @@ public class QRCode extends AppCompatActivity {
         testButton.setOnClickListener(V -> scanCode());
     }
 
-    private void checkPassword(String password) {
+    private void checkEmail(String email) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String correctPassword = snapshot.child("password").getValue(String.class);
-                if (password.equals(correctPassword)) {
+                String correctEmail = snapshot.child("email").getValue(String.class);
+                if (email.equals(correctEmail)) {
                     generateQR();
                 } else {
-                    Toast.makeText(QRCode.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QRCode.this, "Wrong Email", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -93,7 +92,7 @@ public class QRCode extends AppCompatActivity {
         try {
             //Here the text string is being encoded as a QR code
             BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, 400,400);
-            //converts teh bitmatrix into a bitmap image
+            //converts the bitmatrix into a bitmap image
             BarcodeEncoder encoder = new BarcodeEncoder();
             //returns a bitmap object that represents the QR code image
             Bitmap bitmap = encoder.createBitmap(matrix);
@@ -138,7 +137,7 @@ public class QRCode extends AppCompatActivity {
                     pdRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            //teh below code is used to reference each element that resides inside the personal details table and then,
+                            //the below code is used to reference each element that resides inside the personal details table and then,
                             //prints them into the body of the email.
                             StringBuilder emailbody = new StringBuilder();
                             emailbody.append("\nPersonal Details: \n");
@@ -156,6 +155,8 @@ public class QRCode extends AppCompatActivity {
                             hpRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    //the below code is used to reference each element that resides inside the Health problems table and then,
+                                    //prints them into the body of the email.
                                     emailbody.append("\nHealth Problems: \n");
                                     emailbody.append("Breathing: ").append(snapshot.child("breathingText").getValue(String.class)).append("\n");
                                     emailbody.append("Sight: ").append(snapshot.child("sightText").getValue(String.class)).append("\n");
@@ -171,6 +172,8 @@ public class QRCode extends AppCompatActivity {
                                     ciRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            //the below code is used to reference each element that resides inside the history table and then,
+                                            //prints them into the body of the email.
                                             emailbody.append("\nMedical History: \n");
                                             emailbody.append("Current: ").append(snapshot.child("Current").getValue(String.class)).append("\n");
                                             emailbody.append("History: ").append(snapshot.child("History").getValue(String.class)).append("\n");
@@ -180,6 +183,8 @@ public class QRCode extends AppCompatActivity {
                                             iRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    //the below code is used to reference each element that resides inside the Infections table and then,
+                                                    //prints them into the body of the email.
                                                     emailbody.append("\nInfections: \n");
                                                     emailbody.append("Have you had any of these communicable infections: \n");
                                                     emailbody.append("Measles: ").append(snapshot.child("MeaslesboX").getValue(Boolean.class)).append("\n");
@@ -242,7 +247,8 @@ public class QRCode extends AppCompatActivity {
 
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                                                            //the below code is used to reference each element that resides inside the Vaccinations table and then,
+                                                            //prints them into the body of the email.
                                                             emailbody.append("\nVaccinations: \n");
                                                             emailbody.append("At 2 months old: \n");
                                                             emailbody.append("PCV13: ").append(snapshot.child("PCV13Box1").getValue(Boolean.class)).append("\n");
@@ -291,6 +297,7 @@ public class QRCode extends AppCompatActivity {
 
                                                         @Override
                                                         public void onCancelled(@NonNull DatabaseError error) {
+                                                            //notify the user there was a problem with the vaccinations table
                                                             Toast.makeText(QRCode.this, "Error retrieving Vaccination data", Toast.LENGTH_SHORT).show();
                                                         }
                                                     });
@@ -298,6 +305,7 @@ public class QRCode extends AppCompatActivity {
 
                                                 @Override
                                                 public void onCancelled(@NonNull DatabaseError error) {
+                                                    //notify the user there was a problem with the infections table
                                                     Toast.makeText(QRCode.this, "Error retrieving infections data", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
@@ -306,6 +314,7 @@ public class QRCode extends AppCompatActivity {
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
+                                            //notify the user there was a problem with the history table
                                             Toast.makeText(QRCode.this, "Error retrieving Medical history", Toast.LENGTH_SHORT).show();
                                         }
                                     });
@@ -314,6 +323,7 @@ public class QRCode extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
+                                    //notify the user there was a problem with the health problems table
                                     Toast.makeText(QRCode.this, "Error retrieving health problems", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -321,6 +331,7 @@ public class QRCode extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
+                            //notify the user there was a problem with the personal details table
                             Toast.makeText(QRCode.this, "Error retrieving personal details", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -336,4 +347,20 @@ public class QRCode extends AppCompatActivity {
             }).show();
         }
     });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem detailsButton = menu.findItem(R.id.action_personal_details);
+        detailsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(QRCode.this, PersonalDetails.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        return true;
+    }
 }

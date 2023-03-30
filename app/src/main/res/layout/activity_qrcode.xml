@@ -8,9 +8,8 @@
     tools:context=".MainActivity"
     android:padding="10dp"
     android:layout_gravity="center"
+    android:background="@drawable/mainbackground"
     android:orientation="vertical">
-
-    <!--Button for creating a QR code-->
 
     <ImageView
         android:id="@+id/QRImage"
@@ -23,48 +22,36 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
-
-    <EditText
-        android:id="@+id/idEdtPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/QRImage"
-        android:autofillHints=""
-        android:hint="@string/enter_your_info"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.832" />
+        app:layout_constraintVertical_bias="0.215" />
 
     <EditText
         android:id="@+id/QRname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="308dp"
+        android:layout_height="72dp"
         android:layout_below="@id/QRImage"
         android:autofillHints=""
-        android:hint="@string/enter_your_info"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawablePadding="20dp"
+        android:hint="Enter Medicine"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.728"
-        tools:layout_editor_absoluteX="3dp" />
+        app:layout_constraintVertical_bias="0.805" />
 
     <Button
         android:id="@+id/idBtnGenerateQR"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="179dp"
+        android:layout_height="59dp"
         android:layout_below="@id/QRname"
         android:text="@string/generate_qr_code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.951" />
+        app:layout_constraintVertical_bias="0.903" />
 
     <Button
         android:id="@+id/testButton"
@@ -76,6 +63,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.584" />
+        app:layout_constraintVertical_bias="0.664" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,13 @@
 package com.example.fyproject;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +57,7 @@ public class HealthCare extends AppCompatActivity {
         bloodFemale = findViewById(R.id.bloodFemale);
         bloodresult = findViewById(R.id.bloodresult);
     }
+
 
     public void calculateHeartRate(View view) {
         //checks if the radio button selected is male or female after the calculateHeartRate button is selected
@@ -332,5 +337,22 @@ public class HealthCare extends AppCompatActivity {
         }else{
             bloodresult.setText("You're blood pressure is normal");
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem detailsButton = menu.findItem(R.id.action_personal_details);
+        detailsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(HealthCare.this, PersonalDetails.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        return true;
     }
 }

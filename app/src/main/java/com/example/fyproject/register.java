@@ -19,12 +19,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class register extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth mAuth;
 
     private TextView registerButton, login_link;
-    private EditText editEmail, editPassword;
+    private EditText editEmail, editPassword, editPassword2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -42,6 +47,7 @@ public class register extends AppCompatActivity implements View.OnClickListener{
 
         editEmail = (EditText) findViewById(R.id.email);
         editPassword = (EditText) findViewById(R.id.password);
+        editPassword2 = (EditText) findViewById(R.id.password2);
     }
 
     @Override
@@ -61,6 +67,7 @@ public class register extends AppCompatActivity implements View.OnClickListener{
         //retrieves the email and password field contents
         String email= editEmail.getText().toString().trim();
         String password= editPassword.getText().toString().trim();
+        String password2= editPassword2.getText().toString().trim();
 
         //checks to see if the email fields has been filled in
         if(email.isEmpty()){
@@ -83,12 +90,21 @@ public class register extends AppCompatActivity implements View.OnClickListener{
             return;
         }
 
-        //checks to see if the password is of at leasst the required length of 6
+        //checks to see if the password is of at least the required length of 6
         if(password.length() < 6){
             editPassword.setError("Password length must be at least 6 digits long");
             editPassword.requestFocus();
             return;
         }
+
+        if(!password2.equals(password)){
+            editPassword2.setError("Passwords do not match");
+            editPassword2.requestFocus();
+            return;
+        }
+
+        //hashes the password using SHA-256 algorithm
+        String EncryptPassword = EncryptedPassword(password);
 
         //here the application uses firebase to attempt to create a new user using the details from the password and email fields
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -98,7 +114,7 @@ public class register extends AppCompatActivity implements View.OnClickListener{
                         //once the task is complete if it is successful it will create a new
                         //User object that stores the users password and email.
                         if(task.isSuccessful()){
-                            User user = new User(email, password);
+                            User user = new User(email, EncryptPassword);
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -121,5 +137,18 @@ public class register extends AppCompatActivity implements View.OnClickListener{
                         }
                     }
                 });
+    }
+
+    //hashing algorithm used to encrypt password
+    private String EncryptedPassword(String password) {
+        try {
+            MessageDigest message = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = message.digest(password.getBytes());
+            BigInteger bigInt = new BigInteger(1, messageDigest);
+            return bigInt.toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

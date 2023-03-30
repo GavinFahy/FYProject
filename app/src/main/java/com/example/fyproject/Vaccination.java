@@ -3,7 +3,10 @@ package com.example.fyproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -166,5 +169,22 @@ public class Vaccination extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem detailsButton = menu.findItem(R.id.action_personal_details);
+        detailsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(Vaccination.this, PersonalDetails.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        return true;
     }
 }

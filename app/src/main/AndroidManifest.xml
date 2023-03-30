@@ -24,12 +24,19 @@
         android:theme="@style/Theme.FYProject"
         tools:targetApi="31">
 <!--        <activity-->
-<!--            android:name=".Test"-->
+<!--            android:name=".Forms"-->
 <!--            android:exported="false">-->
 <!--            <meta-data-->
 <!--                android:name="android.app.lib_name"-->
 <!--                android:value="" />-->
 <!--        </activity>-->
+        <!-- <activity -->
+        <!-- android:name=".Test" -->
+        <!-- android:exported="false"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.app.lib_name" -->
+        <!-- android:value="" /> -->
+        <!-- </activity> -->
         <!-- <activity -->
         <!-- android:name=".Alarm" -->
         <!-- android:exported="false"> -->
@@ -126,29 +133,41 @@
         <activity android:name=".login" />
         <activity android:name=".register" />
         <activity android:name=".HomePage" />
-        <activity
-            android:name=".PersonalDetails"
-            android:parentActivityName=".HomePage" />
+<!--        <activity-->
+<!--            android:name=".PersonalDetails"-->
+<!--            android:parentActivityName=".HomePage" />-->
         <activity
             android:name=".Infections"
-            android:parentActivityName=".HomePage" />
+            android:parentActivityName=".Forms" />
         <activity
             android:name=".HealthProblems"
-            android:parentActivityName=".HomePage" />
+            android:parentActivityName=".Forms" />
         <activity
             android:name=".MedicalHistory"
-            android:parentActivityName=".HomePage" />
+            android:parentActivityName=".Forms" />
         <activity
             android:name=".Vaccination"
-            android:parentActivityName=".HomePage" />
+            android:parentActivityName=".Forms" />
         <activity
             android:name=".QRCode"
             android:parentActivityName=".HomePage" />
         <activity
             android:name=".HealthCare"
             android:parentActivityName=".HomePage" />
+        <activity
+            android:name=".Alarm"
+            android:parentActivityName=".HomePage" />
+
+        <activity
+            android:name=".Forms"
+            android:parentActivityName=".HomePage" />
 
         <receiver android:name=".AlarmReceiver" />
+
+        <activity
+            android:name=".PersonalDetails"
+            android:label="@string/personal_details_title"
+            android:parentActivityName=".HomePage"/>
     </application>
 
 </manifest>

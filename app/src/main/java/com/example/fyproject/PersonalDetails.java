@@ -3,14 +3,12 @@ package com.example.fyproject;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fyproject.DataAccess.PD_DataAccess;
-import com.example.fyproject.Handlers.PDHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -71,7 +69,7 @@ public class PersonalDetails extends AppCompatActivity {
                 return;
             }
 
-            //creating a hashmap that will store the details for each of the new entrys.
+            //creating a hashmap that will store the details for each of the new entry's.
             HashMap<String, Object> data = new HashMap<>();
             data.put("Name", EnterName.getText().toString());
             data.put("Age", EnterAge.getText().toString());
@@ -93,42 +91,33 @@ public class PersonalDetails extends AppCompatActivity {
                     });
         });
 
-        //here the textviews are initialised
-        final TextView DisplayName = (TextView) findViewById(R.id.displayName);
-        final TextView DisplayAge = (TextView) findViewById(R.id.displayAge);
-        final TextView DisplayGender = (TextView) findViewById(R.id.displayGender);
-        final TextView DisplayWeight = (TextView) findViewById(R.id.displayWeight);
-        final TextView DisplayPhone = (TextView) findViewById(R.id.displayPhone);
-        final TextView DisplayConsultant = (TextView) findViewById(R.id.displayConsultant);
-        final TextView DisplayNext_of_kin = (TextView) findViewById(R.id.displayNext_of_kin);
-        final TextView DisplayNextOfKinNumber = (TextView) findViewById(R.id.displayNumber);
-
         //here the firebase is referenced to gain access to the personal details elements
         reference = FirebaseDatabase.getInstance().getReference("PDHandler").child(currentUserId).child("personalDetails");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                PDHandler pdProfile = snapshot.getValue(PDHandler.class);
-                //then checks to see if the PDHandler is empty in the firebase and if not it then displays each of the elements
-                if(pdProfile != null){
-                   String name = pdProfile.Name;
-                   String age = pdProfile.Age;
-                   String gender = pdProfile.Gender;
-                   String weight = pdProfile.Weight;
-                   String phoneNumber = pdProfile.PhoneNumber;
-                   String consultant = pdProfile.Consultant;
-                   String next_of_kin = pdProfile.Next_of_kin;
-                   String number = pdProfile.Number;
-                   DisplayName.setText((name));
-                   DisplayAge.setText(age);
-                   DisplayGender.setText(gender);
-                   DisplayWeight.setText(weight);
-                   DisplayPhone.setText(phoneNumber);
-                   DisplayConsultant.setText(consultant);
-                   DisplayNext_of_kin.setText(next_of_kin);
-                   DisplayNextOfKinNumber.setText(number);
+                if(snapshot.exists()){
+                    String name = snapshot.child("Name").getValue(String.class);
+                    String age = snapshot.child("Age").getValue(String.class);
+
+                    String gender = snapshot.child("Gender").getValue(String.class);
+                    String weight = snapshot.child("Weight").getValue(String.class);
+                    String phoneNumber = snapshot.child("PhoneNumber").getValue(String.class);
+                    String consultant = snapshot.child("Consultant").getValue(String.class);
+                    String next_of_kin = snapshot.child("Next_of_kin").getValue(String.class);
+                    String number = snapshot.child("Number").getValue(String.class);
+
+                    EnterName.setText((name));
+                    EnterAge.setText(age);
+                    EnterGender.setText(gender);
+                    EnterWeight.setText(weight);
+                    EnterContactNumber.setText(phoneNumber);
+                    EnterConsultant.setText(consultant);
+                    EnterNext_of_kin.setText(next_of_kin);
+                    EnterNextOfKinNumber.setText(number);
                 }
             }
+
             //If something goes wrong the user is notified
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

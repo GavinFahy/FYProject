@@ -7,39 +7,67 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.example.fyproject.DataAccess.MED_DataAccess;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class AlarmReceiver extends BroadcastReceiver {
+    private MED_DataAccess MEDDataAccess;
+    private DatabaseReference reference;
+    private String currentUserId;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Intent i = new Intent(context, HomePage.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-//        Intent i = new Intent(context, AlarmReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "foxandroid")
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Foxandroid Alarm Manager")
-                .setContentText("Subscribe for android related content")
-                .setAutoCancel(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent);
+        reference = FirebaseDatabase.getInstance().getReference("MEDHandler").child(currentUserId).child("Medicine");
+        reference.addListenerForSingleValueEvent(new ValueEventListener(){
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String med = snapshot.child("Medicine").getValue(String.class);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "foxandroid";
-            NotificationChannel channel = new NotificationChannel(channelId, "FoxAndroid", NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
-            builder.setChannelId(channelId);
-        }
+                Intent i = new Intent(context, Alarm.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);
 
-        notificationManager.notify(123, builder.build());
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "foxandroid")
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentTitle("Foxandroid Alarm Manager")
+                        .setContentText("Medicine Reminder: " + med)
+                        .setAutoCancel(true)
+                        .setDefaults(NotificationCompat.DEFAULT_ALL)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent);
+
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    String channelId = "foxandroid";
+                    NotificationChannel channel = new NotificationChannel(channelId, "FoxAndroid", NotificationManager.IMPORTANCE_HIGH);
+                    notificationManager.createNotificationChannel(channel);
+                    builder.setChannelId(channelId);
+                }
+
+                notificationManager.notify(123, builder.build());
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //Toast.makeText(AlarmReceiver.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

@@ -1,60 +1,61 @@
 package com.example.fyproject;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fyproject.DataAccess.PD_DataAccess;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class HomePage extends AppCompatActivity {
 
-    private Button PDButton;
-    private Button VButton;
-    private Button IButton;
     private Button Maps;
-    private Button HP;
-    private Button MH;
     private Button QR;
     private Button health;
-
+    private Button forms;
     private Button alarm;
 
-    FirebaseAuth Authorisation;
+    private DatabaseReference reference;
+    private String currentUserId;
+    private PD_DataAccess pdDataAccess;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
-        //button that will redirect the user to the personal details page.
-        PDButton = findViewById(R.id.PersonalDetails);
-        PDButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, PersonalDetails.class);
-                startActivity(intent);
-            }
-        });
+        pdDataAccess = new PD_DataAccess();
+        //retrieving the current users ID from firebase
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final EditText EnterName = findViewById(R.id.Name);
 
-        //button that will redirect the user to the vaccinations page
-        VButton = findViewById(R.id.Vac);
-        VButton.setOnClickListener(new View.OnClickListener() {
+        reference = FirebaseDatabase.getInstance().getReference("PDHandler").child(currentUserId).child("personalDetails");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, Vaccination.class);
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String name = snapshot.child("Name").getValue(String.class);
+                    EnterName.setText((name));
+                }
             }
-        });
 
-        //Button that will redirect the user to the Infection's page
-        IButton = findViewById(R.id.Infect);
-        IButton.setOnClickListener(new View.OnClickListener() {
+            //If something goes wrong the user is notified
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, Infections.class);
-                startActivity(intent);
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(HomePage.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -68,25 +69,6 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-        //Button that will redirect the user to the HealthProblems page
-        HP = findViewById(R.id.HP);
-        HP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, HealthProblems.class);
-                startActivity(intent);
-            }
-        });
-
-        //Button that will redirect the user to the MedicalHistory page
-        MH = findViewById(R.id.MH);
-        MH.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, MedicalHistory.class);
-                startActivity(intent);
-            }
-        });
 
         //Button that will redirect the user to the QRcode+scanner page
         QR = findViewById(R.id.QR);
@@ -118,6 +100,16 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        //Button that will redirect the user to the alarm page
+        forms = findViewById(R.id.forms);
+        forms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, Forms.class);
+                startActivity(intent);
+            }
+        });
+
         //button that will sign the user out and redirect them back the main activity.
         Button logout;
         logout = (Button)findViewById(R.id.Logout);
@@ -129,4 +121,21 @@ public class HomePage extends AppCompatActivity {
             }
         });
    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem detailsButton = menu.findItem(R.id.action_personal_details);
+        detailsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(HomePage.this, PersonalDetails.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        return true;
+    }
 }

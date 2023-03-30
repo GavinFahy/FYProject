@@ -1,6 +1,9 @@
 package com.example.fyproject;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -244,5 +247,22 @@ public class Infections extends AppCompatActivity {
                 Toast.makeText(Infections.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem detailsButton = menu.findItem(R.id.action_personal_details);
+        detailsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(Infections.this, PersonalDetails.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        return true;
     }
 }

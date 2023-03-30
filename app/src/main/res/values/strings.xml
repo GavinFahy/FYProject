@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">FYProject</string>
+    <string name="app_name">Well-being</string>
 
     <string name="qr_code">qr_code</string>
-    <string name="enter_your_info">Enter your info</string>
+<!--    <string name="enter_your_info">Enter your info</string>-->
     <string name="generate_qr_code">Generate QR Code</string>
 
     <string name="title_activity_map">Map</string>
@@ -17,4 +17,16 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="personal_details_title">Personal Details</string>
+
+    <string-array name="age_ranges">
+        <item>18-25</item>
+        <item>26-35</item>
+        <item>36-45</item>
+        <item>46-55</item>
+        <item>56-65</item>
+        <item>66+</item>
+    </string-array>
+
 </resources>
