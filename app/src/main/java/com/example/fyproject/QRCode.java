@@ -36,9 +36,9 @@ public class QRCode extends AppCompatActivity {
 
     ImageView QRImage;
     EditText QRname;
-    Button idBtnGenerateQR;
+    Button GenerateQR;
 
-    Button testButton;
+    Button scanButton;
 
     private String currentUserId;
 
@@ -49,17 +49,17 @@ public class QRCode extends AppCompatActivity {
 
         QRname = findViewById(R.id.QRname);
         QRImage = findViewById(R.id.QRImage);
-        idBtnGenerateQR = findViewById(R.id.idBtnGenerateQR);
+        GenerateQR = findViewById(R.id.GenerateQR);
 
-        idBtnGenerateQR.setOnClickListener(v ->{
+        GenerateQR.setOnClickListener(v ->{
             String email = QRname.getText().toString().trim();
             checkEmail(email);
         });
 
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        testButton = findViewById(R.id.testButton);
-        testButton.setOnClickListener(V -> scanCode());
+        scanButton = findViewById(R.id.scanButton);
+        scanButton.setOnClickListener(V -> scanCode());
     }
 
     private void checkEmail(String email) {
@@ -73,7 +73,7 @@ public class QRCode extends AppCompatActivity {
                 if (email.equals(correctEmail)) {
                     generateQR();
                 } else {
-                    Toast.makeText(QRCode.this, "Wrong Email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QRCode.this, "Incorrect email", Toast.LENGTH_SHORT).show();
                 }
             }
 

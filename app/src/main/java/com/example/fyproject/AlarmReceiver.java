@@ -41,9 +41,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "foxandroid")
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "wellbeing")
                         .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setContentTitle("Foxandroid Alarm Manager")
+                        .setContentTitle("Well-being Alarm Manager")
                         .setContentText("Medicine Reminder: " + med)
                         .setAutoCancel(true)
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
@@ -53,8 +53,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    String channelId = "foxandroid";
-                    NotificationChannel channel = new NotificationChannel(channelId, "FoxAndroid", NotificationManager.IMPORTANCE_HIGH);
+                    String channelId = "wellbeing";
+                    NotificationChannel channel = new NotificationChannel(channelId, "wellbeing", NotificationManager.IMPORTANCE_HIGH);
                     notificationManager.createNotificationChannel(channel);
                     builder.setChannelId(channelId);
                 }

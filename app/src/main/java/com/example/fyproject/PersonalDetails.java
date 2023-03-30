@@ -55,17 +55,34 @@ public class PersonalDetails extends AppCompatActivity {
             String nok = EnterNext_of_kin.getText().toString();
             String number = EnterNextOfKinNumber.getText().toString();
 
-            //making sure none of the fields are empty
-            if (name.isEmpty() || age.isEmpty() || gender.isEmpty() || weight.isEmpty()
-                    || phoneNumber.isEmpty() || consultant.isEmpty() || nok.isEmpty()
-                    || number.isEmpty()) {
-                Toast.makeText(this, "All fields must be filled in", Toast.LENGTH_SHORT).show();
+            //ensuring the user enters an integer into age
+            try{
+                int user_age = Integer.parseInt(age);
+            }catch(NumberFormatException e){
+                Toast.makeText(this, "Please enter your age", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            //ensuring the user enters an integer for weight
+            try{
+                int kg = Integer.parseInt(weight);
+            }catch(NumberFormatException e){
+                Toast.makeText(this, "The weight must be a number and in kilograms", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             //check to see if the phone number is the correct amount of digits in length
             if (phoneNumber.length() != 10) {
                 Toast.makeText(this, "Phone number must be 10 digits long", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (number.length() != 10) {
+                Toast.makeText(this, "Phone number must be 10 digits long", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Other")){
+                Toast.makeText(this, "Please enter either Male, Female or other", Toast.LENGTH_SHORT).show();
                 return;
             }
 

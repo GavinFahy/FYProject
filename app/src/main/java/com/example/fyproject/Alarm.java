@@ -170,7 +170,7 @@ public class Alarm extends AppCompatActivity {
                 .setTitleText("Select Alarm Time")
                 .build();
 
-        picker.show(getSupportFragmentManager(),"foxandroid");
+        picker.show(getSupportFragmentManager(),"wellbeing");
 
         picker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
@@ -203,10 +203,10 @@ public class Alarm extends AppCompatActivity {
     private void createNotificationChannel() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            CharSequence name = "foxandroidReminderChannel";
+            CharSequence name = "wellbeingReminderChannel";
             String description = "Channel For Alarm Manager";
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("foxandroid",name,importance);
+            NotificationChannel channel = new NotificationChannel("wellbeing",name,importance);
             channel.setDescription(description);
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
