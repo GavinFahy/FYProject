@@ -27,9 +27,6 @@ public class Infections extends AppCompatActivity {
     private I_DataAccess IDataAccess;
     private DatabaseReference reference;
     private String currentUserId;
-//    boolean measlesboX, mumpsBox, rubellaBox, chickenpoxBox, pertussisBox, measlesBox2, mumpsBox2, rubellaBox2, chickenpoxBox2, pertussisBox2, gastroenteritisBox,
-//            vRIBox, vomitBox, diarrhoeaBox, organismsBox, mRSABox, eSBLBox, vREBox, cREBox, transferBox, isolationBoxYes, isolationBoxNo, otherHospitalBoxYes,
-//            otherHospitalBoxNo, mRSABox2, mRGNBBox2, cREBox2, vREBox2, immunocompromisedBoxYes, immunocompromisedBoxNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
