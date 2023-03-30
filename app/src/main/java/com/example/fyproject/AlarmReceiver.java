@@ -30,6 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //accesses the firebase to get the name of the medicine for the current user
         reference = FirebaseDatabase.getInstance().getReference("MEDHandler").child(currentUserId).child("Medicine");
         reference.addListenerForSingleValueEvent(new ValueEventListener(){
 
@@ -41,6 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);
 
+                //styling the notification
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "wellbeing")
                         .setSmallIcon(R.drawable.ic_launcher_background)
                         .setContentTitle("Well-being Alarm Manager")
@@ -50,8 +52,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setContentIntent(pendingIntent);
 
+                //used to display the notification
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     String channelId = "wellbeing";
                     NotificationChannel channel = new NotificationChannel(channelId, "wellbeing", NotificationManager.IMPORTANCE_HIGH);

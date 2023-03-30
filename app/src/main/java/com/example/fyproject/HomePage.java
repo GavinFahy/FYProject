@@ -60,13 +60,11 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-        //Button that will redirect the user to the Map page
+        //Button that will redirect the user to google maps
         Maps = findViewById(R.id.Maps);
         Maps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(HomePage.this, MapsActivity.class);
-//                startActivity(intent);
                 Uri gmmIntentUri = Uri.parse("geo:0,0");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");

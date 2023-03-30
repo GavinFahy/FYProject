@@ -62,6 +62,7 @@ public class QRCode extends AppCompatActivity {
         scanButton.setOnClickListener(V -> scanCode());
     }
 
+    //used to check if the email field inputted in matches the one of the current user in the firebase.
     private void checkEmail(String email) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());

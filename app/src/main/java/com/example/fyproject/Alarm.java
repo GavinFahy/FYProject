@@ -50,6 +50,7 @@ public class Alarm extends AppCompatActivity {
         setContentView(binding.getRoot());
         createNotificationChannel();
 
+        //allows the user to select time
         binding.selectedTimeBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +60,7 @@ public class Alarm extends AppCompatActivity {
             }
         });
 
+        //allows user to set alarm
         binding.setAlarmBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +70,7 @@ public class Alarm extends AppCompatActivity {
             }
         });
 
+        //alows user to cancel alarm
         binding.cancelAlarmBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +127,7 @@ public class Alarm extends AppCompatActivity {
     }
 
 
+    //method used to cancel alarm
     private void cancelAlarm() {
 
         Intent intent = new Intent(this,AlarmReceiver.class);
@@ -140,13 +144,14 @@ public class Alarm extends AppCompatActivity {
         Toast.makeText(this, "Alarm Cancelled", Toast.LENGTH_SHORT).show();
     }
 
+    //method used to set alarm
     private void setAlarm() {
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-        if (calendar != null) { // check if calendar is not null
+            // check if calendar is not null
+        if (calendar != null) {
 
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                     AlarmManager.INTERVAL_DAY, pendingIntent);
@@ -161,6 +166,7 @@ public class Alarm extends AppCompatActivity {
 
     }
 
+    //method to create the time picker
     private void showTimePicker() {
 
         picker = new MaterialTimePicker.Builder()
@@ -200,6 +206,7 @@ public class Alarm extends AppCompatActivity {
 
     }
 
+    //method that creates the notification channel
     private void createNotificationChannel() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
